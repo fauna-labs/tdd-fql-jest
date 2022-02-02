@@ -14,39 +14,81 @@ const faunaClient = new faunadb.Client({
 });
 
 test('Split correctly separates an IPv4 address into four octets', async () => {
-  const string = '127.0.0.1';
-  const delimiter = '.';
+  // 1. Define the input to your expression as one or more constants.
+  const input = {
+    string: '127.0.0.1',
+    delimiter: '.',
+  };
+
+  // 2. Define the expected output of your expression as a constant.
   const expected = ['127', '0', '0', '1'];
-  // If you trust JavaScript's implementation of split, you can use it here.
-  // const expected = string.split('.');
 
-  const result = await faunaClient.query(
-    Split(string, delimiter)
-  );
+  // 3. Construct your FQL expression.
+  const expr = Split(input.string, input.delimiter);
 
-  expect(result).toEqual(expected);
+  // 4. Evaluate your FQL expression in Fauna and save the actual output.
+  const actual = await faunaClient.query(expr);
+
+  // 5. Compare the actual output to the expected output.
+  expect(actual).toEqual(expected);
 });
 
 test('When the delimiter is not found, Split(str, del) = [str]', async () => {
-  const string = 'Hello, world!';
-  const delimiter = '.';
-  const expected = [string];
+  // 1. Define the input to your expression as one or more constants.
+  const input = {
+    string: 'Hello, world!',
+    delimiter: '.',
+  };
 
-  const result = await faunaClient.query(
-    Split(string, delimiter)
-  );
+  // 2. Define the expected output of your expression as a constant.
+  const expected = [input.string];
 
-  expect(result).toEqual(expected);
+  // 3. Construct your FQL expression.
+  const expr = Split(input.string, input.delimiter);
+
+  // 4. Evaluate your FQL expression in Fauna and save the actual output.
+  const actual = await faunaClient.query(expr);
+
+  // 5. Compare the actual output to the expected output.
+  expect(actual).toEqual(expected);
 });
 
 test('When the string only contains the delimiter, Split(str, del) = []', async () => {
-  const string = '................';
-  const delimiter = '.';
+  // 1. Define the input to your expression as one or more constants.
+  const input = {
+    string: '................',
+    delimiter: '.',
+  }
+
+  // 2. Define the expected output of your expression as a constant.
   const expected = [];
 
-  const result = await faunaClient.query(
-    Split(string, delimiter)
-  );
+  // 3. Construct your FQL expression.
+  const expr = Split(input.string, input.delimiter);
 
-  expect(result).toEqual(expected);
+  // 4. Evaluate your FQL expression in Fauna and save the actual output.
+  const actual = await faunaClient.query(expr);
+
+  // 5. Compare the actual output to the expected output.
+  expect(actual).toEqual(expected);
 });
+
+// General framework for creating a new test.
+/*
+test('<description>', async () => {
+  // 1. Define the input to your expression as one or more constants.
+  const input = ...;
+  
+  // 2. Define the expected output of your expression as a constant.
+  const expected = ...;
+  
+  // 3. Construct your FQL expression.
+  const expr = ...;
+  
+  // 4. Evaluate your FQL expression in Fauna and save the actual output.
+  const actual = await faunaClient.query(expr);
+  
+  // 5. Compare the actual output to the expected output.
+  expect(actual).toEqual(expected);
+});
+ */

@@ -19,3 +19,9 @@ export function Split(str, sep) {
     Lambda("res", Select(["data"], Var("res")))
   )
 };
+
+// Pre-implementation function stub
+//
+// export function Split(str, sep) {
+//   return undefined;
+// };
