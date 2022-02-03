@@ -1,7 +1,7 @@
 // Copyright Fauna, Inc.
 // SPDX-License-Identifier: MIT-0
 
-import faunadb, { CreateFunction } from 'faunadb';
+import faunadb from 'faunadb';
 
 const q = faunadb.query
 const {
