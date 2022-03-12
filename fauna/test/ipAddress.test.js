@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 import faunadb from 'faunadb';
+import * as fc from 'fast-check';
 
 import { 
   IsValidV4Address,
@@ -123,3 +124,26 @@ test('IsValidV4CIDR throws an error when provided a non-integer netmask', async 
 
   await expect(q).rejects.toThrow();
 });
+
+// ----------------------------------------------------------------------------
+// Property-based testing example with fast-check
+// ----------------------------------------------------------------------------
+test('IsValidV4Address should accept any valid IPv4 address', () => fc.assert(
+	fc.asyncProperty(
+		fc.ipV4(),
+		async (addr) => {
+			const expr = IsValidV4Address(addr);
+      expect(await faunaClient.query(expr)).toBe(true);
+		}
+	)
+));
+
+test('IsValidV4CIDR should accept any valid IPv4 CIDR block', () => fc.assert(
+	fc.asyncProperty(
+		fc.ipV4(), fc.nat(32),
+		async (addr, netmask) => {
+			const expr = IsValidV4CIDR(`${addr}/${netmask}`);
+      expect(await faunaClient.query(expr)).toBe(true);
+		}
+	)
+));

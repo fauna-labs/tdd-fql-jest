@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "fast-check": "^2.22.0",
     "faunadb": "^4.4.2"
   },
   "devDependencies": {
