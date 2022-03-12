@@ -4,7 +4,6 @@
 import faunadb from 'faunadb';
 import { Split } from './split';
 
-const q = faunadb.query
 const {
   All,
   And,
@@ -19,9 +18,9 @@ const {
   Select,
   ToInteger,
   Var
-} = q;
+} = faunadb.query;
 
-export function IsValidNetmask(str) {
+function isValidNetmask(str) {
   return Let(
     {
       val: ToInteger(str)
@@ -34,7 +33,7 @@ export function IsValidNetmask(str) {
   )
 };
 
-export function IsValidOctet(str) {
+function isValidOctet(str) {
   return Let(
     {
       val: ToInteger(str)
@@ -57,7 +56,7 @@ export function IsValidV4Address(str) {
       All(
         Map(
           Var("octets"),
-          Lambda("octet", IsValidOctet(Var("octet")))
+          Lambda("octet", isValidOctet(Var("octet")))
         )
       )
     )
@@ -74,7 +73,7 @@ export function IsValidV4CIDR(str) {
     And(
       Equals(Count(Var("slices")), 2),
       IsValidV4Address(Var("ipaddr")),
-      IsValidNetmask(Var("netmask"))
+      isValidNetmask(Var("netmask"))
     )
   )
 };

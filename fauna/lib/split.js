@@ -3,7 +3,6 @@
 
 import faunadb from 'faunadb';
 
-const q = faunadb.query
 const {
   Concat,
   FindStrRegex,
@@ -11,7 +10,7 @@ const {
   Map,
   Select,
   Var
-} = q;
+} = faunadb.query;
 
 export function Split(str, sep) {
   return Map(
